@@ -7,6 +7,5 @@ packaging, and manifest sync all live in:
 
 `vg188/pystudio-termux-builds`
 
-This repository only exposes primary and secondary source workflows that call
-the reusable orchestrator workflow.
-
+This repository exposes one workflow with a `source` input. Each run selects
+exactly one source and calls the reusable orchestrator workflow.
