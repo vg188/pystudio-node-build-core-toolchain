@@ -1,0 +1,1 @@
+nodejs npm python build-essential make cmake ninja pkg-config binutils ndk-sysroot libllvm python-cmake openssl zlib libffi libsqlite

@@ -1,0 +1,48 @@
+name: Build PyStudio Node Build Core Primary
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/build-node-build-core-primary.yml"
+      - "pystudio-package-set.txt"
+      - "README.md"
+  workflow_dispatch:
+    inputs:
+      architectures:
+        description: "Target architectures, comma-separated."
+        required: false
+        default: "aarch64,arm,i686,x86_64"
+      packages:
+        description: "Runtime packages to build, space or comma separated."
+        required: false
+        default: ""
+      publish_release:
+        description: "Publish artifacts to a GitHub release."
+        required: false
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pystudio-node-build-core-primary-${{ github.ref }}-${{ github.event_name }}
+  cancel-in-progress: false
+
+jobs:
+  build:
+    uses: vg188/pystudio-termux-builds/.github/workflows/reusable-toolchain.yml@main
+    with:
+      profile: node-build-core
+      source: primary
+      architectures: ${{ inputs.architectures || 'aarch64,arm,i686,x86_64' }}
+      packages: ${{ inputs.packages || '' }}
+      publish_release: ${{ github.event_name != 'workflow_dispatch' || inputs.publish_release }}
+      artifact_prefix: pystudio-node-build-core-toolchain-primary
+      release_tag_prefix: pystudio-node-build-core-toolchain
+      release_name: PyStudio Node build core toolchain
+      orchestrator_ref: main
+    secrets: inherit
+
